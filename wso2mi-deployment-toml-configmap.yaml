@@ -1,0 +1,219 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wso2mi-deployment-toml-configmap
+  namespace: wso2mi
+
+data:
+  deployment.toml: |-
+    [server]
+    hostname = "mi.anbesabank.et"
+    # offset  = 10
+
+    [user_store]
+    class = "org.wso2.micro.integrator.security.user.core.jdbc.JDBCUserStoreManager"
+    type = "database"
+
+    [internal_apis.file_user_store]
+    enable = false
+
+    [[datasource]]
+    id = "WSO2_COORDINATION_DB"
+    url= "jdbc:postgresql://10.1.5.103:5432/clusterdb"
+    username = "lion-admin"
+    password = "$secret{database_db_password}"
+    driver="org.postgresql.Driver"
+    pool_options.maxActive=50
+    pool_options.maxWait = 60000
+    pool_options.testOnBorrow = true
+
+    [[datasource]]
+    id = "WSO2CarbonDB"
+    url= "jdbc:postgresql://10.1.5.103:5432/userdb"
+    username = "lion-admin"
+    password = "$secret{database_db_password}"
+    driver="org.postgresql.Driver"
+    pool_options.maxActive=50
+    pool_options.maxWait = 60000
+    pool_options.testOnBorrow = true
+
+    [[datasource]]
+    id = "WSO2_TRANSACTION_DB"
+    url= "jdbc:postgresql://10.1.5.103:5432/transactiondb"
+    username = "lion-admin"
+    password = "$secret{database_db_password}"
+    driver="org.postgresql.Driver"
+    pool_options.maxActive=50
+    pool_options.maxWait = 60000
+    pool_options.testOnBorrow = true
+    [transaction_counter]
+    enable = true
+    data_source = "WSO2_TRANSACTION_DB"
+    update_interval = 2
+
+    [[datasource]]
+    id = "apis_transaction_details_db"
+    url= "jdbc:postgresql://10.1.5.103:5432/apis_transaction_details_db"
+    username = "postgres"
+    password = "$secret{apis_transaction_details_db_password}"
+    driver="org.postgresql.Driver"
+
+    [[datasource]]
+    id = "libcbs02"
+    url= "jdbc:oracle:thin:@10.1.10.132:2110/libampdb"
+    username="payment_gateway"
+    password="$secret{lib_cbs_password}"
+    driver="oracle.jdbc.OracleDriver"
+    pool_options.maxActive=50
+    pool_options.maxWait = 60000
+    pool_options.testOnBorrow = true
+
+    [super_admin]
+    username = "lionadmin"
+    password = "$secret{admin_password}"
+    admin_role = "admin"
+    create_admin_account = true
+
+    [keystore.primary]
+    file_name = "repository/resources/security/lion-bank-keystore.jks"
+    password="$secret{keystore_password}"
+    alias = "lib"
+    key_password = "$secret{private_key_password}"
+
+    [truststore] 
+    file_name = "repository/resources/security/lion-bank-client-truststore.jks"
+    password = "$secret{client_truststore_jks_password}"
+    alias = "lib"
+    algorithm = "AES"
+
+    ## Following are set of example configs. Please refer docs for complete set of configurations.
+
+    # [transport.http]
+    # socket_timeout = 180000   # timeout in milliseconds
+    # disable_connection_keepalive = false
+    # connection_timeout = 90000 # in milliseconds
+
+    [transport.http]
+    properties.port = 8290
+    properties.proxyPort = 80
+
+    [transport.https]
+    properties.port = 8253
+    properties.proxyPort = 443
+
+    [transport.jms]
+    sender_enable = true
+    listener_enable = true
+
+    [[transport.jms.sender]]
+    name = "default"
+    parameter.initial_naming_factory = "org.apache.activemq.jndi.ActiveMQInitialContextFactory"
+    parameter.provider_url = "tcp://activemq-svc:61616"
+    parameter.connection_factory_name = "QueueConnectionFactory"
+    parameter.connection_factory_type = "queue"
+    parameter.cache_level = "producer"
+
+    [[transport.jms.listener]]
+    name = "myQueueConnectionFactory"
+    parameter.initial_naming_factory = "org.apache.activemq.jndi.ActiveMQInitialContextFactory"
+    parameter.provider_url = "tcp://activemq-svc:61616"
+    parameter.connection_factory_name = "QueueConnectionFactory"
+    parameter.connection_factory_type = "queue"
+
+    # [transport.jndi.connection_factories]
+    # 'connectionfactory.QueueConnectionFactory' = "amqp://admin:admin@clientID/carbon?brokerlist='tcp://localhost:5675'"
+    # 'connectionfactory.TopicConnectionFactory' = "amqp://admin:admin@clientID/carbon?brokerlist='tcp://localhost:5675'"
+
+    # [transport.jndi.queue]
+    # jndiNameOfQueue = "physicalNameOfQueue"
+
+    # [transport.jndi.topic]
+    # jndiNameOfTopic = "physicalNameOfTopic"
+
+    # [transport.rabbitmq]
+    # sender_enable = true
+    # listener_enable = true
+
+    # [[transport.rabbitmq.sender]]
+    # name = "AMQPConnectionFactory"
+    # parameter.hostname = "localhost"
+    # parameter.port = 5672
+    # parameter.username = "guest"
+    # parameter.password = "guest"
+
+    # [[transport.rabbitmq.listener]]
+    # name = "AMQPConnectionFactory"
+    # parameter.hostname = "localhost"
+    # parameter.port = 5672
+    # parameter.username = "guest"
+    # parameter.password = "guest"
+
+    # [[transport.phase_order]]
+    # Entire phase_order list can be found under 'Axis2 Phases' in <MI_HOME>/repository/resources/conf/deployment-full.toml.
+    # If an Axis2 phase needs to added/removed, include all of the
+    # Inflow, OutFlow & OutFaultFlow phases found in the deployment-full.toml and change them as needed.
+
+    # [system.parameter]
+    # 'key' = "value"
+
+    # [management_api]
+    # protocols = "http"
+
+    # [[internal_apis.users]]
+    # user.name = "admin"
+    # user.password = "admin"
+    # user.is_admin = true
+
+    # [transaction_counter]
+    # enable = true
+    # data_source = "WSO2CarbonDB"
+    # update_interval = 2
+
+    [mediation]
+    flow.statistics.enable=true
+    flow.statistics.capture_all=true
+    synapse.enable_xml_nil=true
+    # synapse.global_timeout_interval = "120000"  # interval in milliseconds
+
+    [analytics]
+    enabled=true
+    publisher = "log"
+    id = "wso2mi_server_1234"
+    prefix = "SYNAPSE_ANALYTICS_DATA"
+    api_analytics.enabled = true
+    proxy_service_analytics.enabled = true
+    sequence_analytics.enabled = true
+    endpoint_analytics.enabled = true
+    inbound_endpoint_analytics.enabled = true
+
+    [[service_catalog]]
+    apim_host = "https://wso2apim-cp-app-svc.wso2.svc.cluster.local:9443"
+    enable = true
+    username = "admin"
+    password = "$secret{service_catalog_password}"
+
+    [dashboard_config]
+    dashboard_url = "https://wso2mi-dashboard-svc.wso2mi.svc.cluster.local:9743/dashboard/api/"
+    # management_hostname = "wso2mi-svc"
+    # management_port = "9164"
+
+    [secrets]
+    service_catalog_password    = "MWys/2y0EtzpA+PVCWewWHX6U5+JF+6RMZSdvap/fDKlMzDdDXyYeK5PfWtXKmoJlc6UAAMr2qwaQjb2O5w4nU0nk8Tuz/3fd7xxG2EkGFJB/dlPFrkXXMvcwe8kh+GA0+nmhS2ZUwRHj1wHd2/qi8OVxBGSDhwZL0ScKgQ3y/Ir2CTzIZIMo9FxTuwANVqg25HG3KrnIzGvBJUv2ZyzoyGUeRMNPBbfst4HxcRLVSugMhsbtpO/LGxRVowjMz9GlYyB++F+BNaXgUP2dzShxmqFxw6ybuN4oOm55RaBIA255dCsn9+uoNa2XNhbizKtEdB/Z95f6fsdOwRrLWbPGQ=="
+    database_db_password    = "yZpro2sKoybYIplb9VkZAm2PbsSOP/kL6tvSMsryWWCBNpZCNR9hCAz6tdl8yErtbtw/jyDAnslKokJVviig6/nP7c0+Xm9mJ4shOcv9WI+RRyi5hXLmJIvjPxoVwSTh4NxaKJT1IXbmLHBM3+1kdOtzkAmFnnhPA3GT3NhHldGMe6jQaXFvqxQW0UEb3zGG3qZI2595PlQhKhjQPo/SrCN99Pwl3+BSoX1MKrWASM6CTzTz+iQBhc6AK2ForIvHQzBF+rOd1b0drB6Q1aHA5Y97unNyYyD/j5dhnVWDsSdTE6yKBDhLuRtiCNKQnG7qx3bTTbPgLvbeGNPCWUyueg=="
+    keystore_password    = "F81DCQqCHSpxEYE0Xs8RJY/wvNka7BPGp8faZm5I6BLSIeYpha7/dsDxbkrrcBz5y+vW+qizCl9sF55tlvu2ltYtTSEc87BcULp0ih7GvtVU/Xun91tFuZIn+bczsM0nNN7YS0tkV39W2HQE0QqJFPEFRv3mTUzPQA84lsu/47OYS8OcGBCogs+CSoduZlN4JPZuphesP84FMJOD5779UyW/s9s1rRhoKxc7EHaNi2r/zoJBPoYBxXryvBQMhUuDJ4tQFhh5YOrF6CafslYLgpRvZ9P8aSlGQ0CDt2YgIE7opGOBqwqhMZkyVigoRGAjfp5DpE5yHxzcGPI/fdQ4wg=="
+    private_key_password    = "dzkGqYUAT4t4R9qjkHhJHHVli431Fd6DOD/YazsjVsKQj6e01hnKxHxfh7sXP2dNPdTn3xQUjdGJ7iK06aCEP/UjchP88D6OpyCu/uQK1ZxjeQ38ixMT14PXfK5spFp6nalhZ7A0JAkm/svW0qfQ3f+bjG1i6T9k91T1rK73sXA29ClTXv84HQ33z2XiEwfhEvo6h04hoWGGM562O1sq2u1s4frw42yAPn0fMcFPBDR/be/1SXJtlgvgyTzF+IPtEHEGfIbUz8k19jjCcOOAKCY6EzGubT3T1IWtrSADRRRA8HkGERVczsNUM3SW3t0bCPiqzMh0KIRQdUJsvHBxsA=="
+    client_truststore_jks_password    = "CZ6EOw4CbTsrnh5XRfP4RnOVZaAjrLuK/hx09KHo67I4/30QIvNshjLfxCRlMhTumk4pPJxv4u+2FvptwB8ASRka/DgnkTTolfIk8TctRAoFPmIE/ig/k5w4FKeJrEFzbt5Y9xJHJu4bjg4d6MVmq/dJsVBZ0mAMI+teiOJiJ4Vym379fQqDDTAHyl6XukSQ64hYYHiucfpi+b4ELHuCpxUtMizRnyZSQE92YOrQD0rX7qZJfLNHqdkjS0TEukhJqzJCRMmeR03iUCtfl/yM8+WEZT92svO4I0MF1RaDrS4UR7YXs8AUVKJlx58iY5tEKorgbynMK5lUl4MrxKjpuA=="
+    admin_password  = "nYeN7QA9Xg0ugQO5pw85JBESYKWQcJBNBxgJqvyFOOmPhGuipzNVmjNjNgHsYfygOSzEs+4LB+UnypXn/Ob+nGae6bKR/eb/6+tN/hAZHcxHQ3j19kzxwEdKWfPd1zirv99w0WZyxj5W5LT7YyMco8kW+Qz/Z4y6TY/4yzxCuF5AumXnLZR8TJhRMbuGTszhCxCLHHchlwLH7Pr7Y6aldQ6ZQKYqGtRnZq8Yy6aHtlrHM22BshxpNFOVJJlLe7R0kZMHXnNFaMLh/Kd/9IM7X5wohOzLF0hb92H0vTVmsFktCGEGnqBTu9T/EijCNWFseZo5hSuUDS5TJjBGr96Fxw=="
+    lib_cbs_password = []
+    # prod_apis_transaction_details_db_password  = "LP1pWWkF6Pa3vg/3pGrwUbXElXbcfKNfM5mpey5B0e0rvft8z8G+jc7lgsgLI4fm6Idaw7rgr/NL4bGB7xDbmvzxP/oByqFPVU9JTqIhOxswS1Bm6tMpvA3aFCrjO4OqYLMei4YM2YTIT7qEC8IihcFadx5cSzOwAhdWxqq6uuZngXnA7A9oZYRR3wALkM2/Lg7X+KBVkYb6kOfLyScMERPuVcxTnT161ni2yrQsD337AGWbdt0YeYd6O0eNpu0Cpn1TX1aT05bU5e+ByKFHH2X+QsD+HsQ3KbOSLb5uTCP8y7xqi7hy5eqm5Cr5dK4V+55NyO/RiTlH14tj5+YbDA=="
+    # etswitch_incoming_password = "peyZ59XDsFV7twpK4hLD3QlPSsP8zl54EXgFy+D/f7/z8iIo2zueyF/TYsmRoZxhtfUTElmJGj/7/gxipEsRf+feZ+KXR5yWnfZfsA01pBmjVHx9QEL+qqRA1WeidBVWWLTq/cnfmoKXMAiccmkhUs4tWkKs6dpT3txdHeHjVtFbL4kW873AWSTX9hAHtfu/8UFHVPreF3vH5hEtY+Hgw2NRzViXrd8JKx/KT/JGylfjnqL3MKyJpgPQOay/uMY2gA+qPGAXuGX7GDyMi/5UgduZ/0gm1c6a6LyFotJi58A6dsJngjRe1h/mLLTfVndvlIZVbAY+zJk6/wYFTOdkyw=="
+    # etswitch_outgoing_password = "peyZ59XDsFV7twpK4hLD3QlPSsP8zl54EXgFy+D/f7/z8iIo2zueyF/TYsmRoZxhtfUTElmJGj/7/gxipEsRf+feZ+KXR5yWnfZfsA01pBmjVHx9QEL+qqRA1WeidBVWWLTq/cnfmoKXMAiccmkhUs4tWkKs6dpT3txdHeHjVtFbL4kW873AWSTX9hAHtfu/8UFHVPreF3vH5hEtY+Hgw2NRzViXrd8JKx/KT/JGylfjnqL3MKyJpgPQOay/uMY2gA+qPGAXuGX7GDyMi/5UgduZ/0gm1c6a6LyFotJi58A6dsJngjRe1h/mLLTfVndvlIZVbAY+zJk6/wYFTOdkyw=="
+    # telebirr_name_check_password = "ER05ixfBQJgZF7lBXdNNWEwmTixFgRKVU4ia5/BT4ehOyfS++k9eoY5gomGg7Ho1sphgdTdfwrJfN0WARESjnPSjpPsrSCIMRxwM+2++6FwrIombGxFGLfPz8bh9PJlth/k3g3M9iItmiRGfRHxk4AzhGCrzMGdsH0U1Qb1aDgkSQdEZk44Xro+eqTOGBuO1Lz0clovFSTaVpXZruTc9erC90vPtTMHL0MLxzFJQcsVGBmhWYKeeDue8JbtP8POyd77g3/HE4ELcImU9P7r5HKgOEi58IbAqumGqMyg6dwQ+E8IRWCnkUXNfh1693x+pzdf+nxCMBw80cuu9koV6fA=="
+    # telebirr_name_check_security_credential = "TOv6y1B5rur/yAa8M9KTB0aKXAtXGaaC2Fivza5AevQM8pr0K3YmDpT5vPWDspTQwHGtdkT2RHmCm5oCyfCHtffw/o1bkGUvQzOy/YtoD3YCgTuC9GJ0+zvOm/Dnud9yxqPkApX+gLHCC99DWdClPsSvzcsKxuSS+M8Hr1jwk0C6k/w6GGJoB3weijV54h3WV7bKmY/koFPKlsKuiuexj8XlEt5SanOD7mOu6+EX+hsKQLaZPTLyjEHYbzxCDnOZ5m95o2edc7IHa+ypVVTlxI5NUnNA5ry+51MqocQovt9ZQZXjrum3EdoC67QLrANo/1xgOZTHWQ5BPZgKJp0nMw=="
+    # telebirr_outgoing_credit_password = "viDF2IsJ+tY6HBZirjuF1gp4vGxrjwF8lLAur94ZhMhjqh9QM/TEOtPVK4rCRZiMvFI9EYZ/mLzrBFECYqtpzy6LVB3AAQXzKklhz+cvpVP/X7pn71ItHtWdn3sdxPZ5ds613w55IaEv50XgUJSs2iPjzwZMQ0AnweOBGH1Oi7jjvw09CgzDAoml1P0Pd27DCuS8CSY3t2Ddio9KxLzApVivarJnkG6ybfuMlGBExkn0Kt2+WByQfu60I7D7jtvvm4JrTj/ThED7HksLbSU0GrSvw4PcHkoBhQvpBFknpGCJEvqqEeAWlQIESYSD7oLZ866SCQpBzBh6B7XkF+N9iQ=="
+    # telebirr_outgoing_credit_security_credential = "HEBJOedxI3mZ3ASfMVNCY29eAMmkEBvAepzWK3JXA1PHsGQ6mjCQAbxxv3UFGMeFvewOSrjuQPOE/yChcJwAYAbb8vd7V+2rG5VeuSB+0Gy4GPe9twnrAU8uuBp9Nf0KH/uZRhcYi4MxGexHfqqTqChxxd8uRtkXuG15R8bKbww3PfolOR4jg/QK2DVw5n+5+KYzYbc9WS0JXi49MPyR8AnXPQBveDimxzrXYuDM/N3ssoaFgaV5+8H04e3kGE582CJEXl8qiS7yQdzHyXjR3cI3+FfRXLD9W/0ybNVecYBcmmBRAwdVx9P/qjRF1q2cPP89mY7fZw2Z8AlbywObwg=="
+    # telebirr_incoming_password = "viDF2IsJ+tY6HBZirjuF1gp4vGxrjwF8lLAur94ZhMhjqh9QM/TEOtPVK4rCRZiMvFI9EYZ/mLzrBFECYqtpzy6LVB3AAQXzKklhz+cvpVP/X7pn71ItHtWdn3sdxPZ5ds613w55IaEv50XgUJSs2iPjzwZMQ0AnweOBGH1Oi7jjvw09CgzDAoml1P0Pd27DCuS8CSY3t2Ddio9KxLzApVivarJnkG6ybfuMlGBExkn0Kt2+WByQfu60I7D7jtvvm4JrTj/ThED7HksLbSU0GrSvw4PcHkoBhQvpBFknpGCJEvqqEeAWlQIESYSD7oLZ866SCQpBzBh6B7XkF+N9iQ=="
+    # awach_password  = "EOFFprci/FadooDi9poOJt7+BErLIDhOLdO0VaWSrrGwz77v0qvdnyFeaBb/dBEjhXpqHSp0eTClIdbJx0LKSA+xXRHRtBmYCrEcD0Xn9KU4WZSDZvKDKCUHc8N7zETKYSre8bElCV6dX4Dl6tBUdC+FyMTLz+5doj86c9vrIYTRIGxV0cQC/mFgeB6RZ4Q9dQQIhEbq1tibRdiEJBaJyBmYJccm6flu6pKNDiarrogP66n41dJt+OR4KGheyBj3R3/TVaTP6bob/I7aLqO7gymzTUqFwwK1AQFTj+cWLR4iP2ENxEHx1fGS17nfHXC08H9rOZewAdZhL29/pZwjKA=="
+    # cbs_client_secret  = "fVLcm7tOood8fmu72itOnCzVB/4QEkuf1Aklp4YJOj4Ppr2iEkZmB7w2wNZm5Znj9HGFgxSuMkkQY/nL/UPcO71+WCL5SDoNcp0T+DSFz8mcx4TMkU3VNjCLpQBYSFF91CmTrIcJWWLLXslzIc6knxvPGhDaPfnV0Krr7KpoPMaQLTdOuhUDjxLWtfY9GzRF9oYNLzvJglIBgC2ArrRQt4lesP4w8o5HBYGlyF7GCrRDWdp52qbZtkkfxSokwtS7TAIavRp7rTM/nerrbpA3SlzCj/XCjPPtqVIDpVhzZlp4r/ci14MlN6QpVrtAIZtRBpJ3zqwga8bIhpvEVHEyEg=="
+    # mpesa_initiator_password = "i+D+DDfvgu7xVglD+OrpjyLXpMDjQ59vibOU3qWNVNmT9MeRZn5IasvPLhNJWWJkRl1TtLVePYbfhKmgNNmIg1iRKGOBxnp8z2VZeri/TWLuSlir48Mf0SJ6gUGnf3YeE3AtzXj8VUH62WPuC4DTL1sXp14zJuJ2mDsS9w+a2xoyLphAXDhhvkqNsjavhhUj7TLYcvRMAN6ky7E4C3hMxM5Bdldkc/rGUSB0N9fPqlMq+GRm/G4zCvCOoqhlbFJyXHNkteX+F0FoqSVo5BFfemy+ICkxStZj9tHT1vukKMFOA4P8cBAUvZZJOcDEVfT+yMSGeoSR+sKQUf2xQVNt0Q=="
+    # mpesa_client_password  = "RCQUDs+J6NkPz/6yKYepHYmVfhJdYZHyGOUQocKC8gDYbdJ3O6W7V4yQ65aE7wwrkxFA94TdETYh5wmA0FQpsFuFmLk4QMNvrWt3WWWIq3KruhNBGwB3kmmbERjCseyVIxHFrosQ7MCD3YJHlHkuL7PGQiq3NOxkjPwTPpXgQjlbwbjBXHi4Hy6IT3vQdQejC2jUjnZLjtp76iH0gIYS+6TvqwpyrGfPdhJYlfBB0ESjzjkfR4unuoG0GoEgFM2BAacoI5nJrEhJnMB7hzn8Ep1I+V6JwfIX/q7KmsMR6rrrNUEwrr6aJ4XM4891pbPCIqXzGKUDiHvs3eSTWiODaQ=="
