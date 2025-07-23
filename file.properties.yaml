@@ -19,7 +19,7 @@ data:
     scope=DBSAPP
     client_id=DBS
 
-    apis_transaction_details_db_url=jdbc:postgresql://10.1.8.103:5432/apis_transaction_details_db
+    apis_transaction_details_db_url=jdbc:postgresql://10.1.5.103:5432/apis_transaction_details_db
     apis_transaction_details_db_user=postgres
     telebirr_callback_wait_seconds=30
  
@@ -81,7 +81,7 @@ data:
     telebirr_trust_fund_branch_id=00001
 
     # Awach endpoint
-    awach_ep=http://172.16.100.17:8990/AWACH-INT/services
+    awach_ep=http://172.16.100.10:8995/AWACH-INT/services
 
     # Awach static fields
     awach_username=LIBBNK1
