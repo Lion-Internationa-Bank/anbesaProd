@@ -7,11 +7,11 @@ data:
   file.properties: |
   
     # cbs endpoints
-    cbs_create_transfer_ep=https://10.1.7.85:8095/createTransfer
-    cbs_create_fund_reservation_ep=https://10.1.7.85:8095/createFundReservation
-    cbs_cancel_fund_reservation_ep=https://10.1.7.85:8095/cancelFundReservation
-    cbs_customer_name_ep=https://10.1.7.85:8095/getAccountDetail
-    cbs_create_single_domestic_transfer_request_ep=https://10.1.7.85:8095/createSingleDomesticTransfer
+    cbs_create_transfer_ep=https://10.1.10.12:8095/createTransfer
+    cbs_create_fund_reservation_ep=https://10.1.10.12:8095/createFundReservation
+    cbs_cancel_fund_reservation_ep=https://10.1.10.12:8095/cancelFundReservation
+    cbs_customer_name_ep=https://10.1.10.12:8095/getAccountDetail
+    cbs_create_single_domestic_transfer_request_ep=https://10.1.10.12:8095/createSingleDomesticTransfer
     
     # cbs auth details
     cbs_token_ep=https://10.1.7.85:8289/amplitude/oauth/token
