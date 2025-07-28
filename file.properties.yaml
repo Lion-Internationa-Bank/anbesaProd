@@ -61,8 +61,8 @@ data:
     etswitch_outgoing_name_enquiry_source_bin=231443
 
     # telebirr endpoints 
-    telebirr_name_check_ep=https://10.180.70.177:30002/payment/services/APIRequestMgrService
-    telebirr_transaction_request_ep=https://10.180.70.177:30002/payment/services/APIRequestMgrService
+    telebirr_name_check_ep=https://ethiomobilemoney.et:30002/payment/services/SYNCAPIRequestMgrService
+    telebirr_transaction_request_ep=https://ethiomobilemoney.et:30002/payment/services/APIRequestMgrService
     telebirr_incoming_login_id=lib
     telebirr_outgoing_name_enquiry_caller_third_party_id=Query
     # telebirr_outgoing_name_enquiry_caller_password=iPYC7emyUh0S9hWh2pszVq8pcgR26jIMbbVIiGHjtj8=
