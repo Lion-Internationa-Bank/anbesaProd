@@ -61,12 +61,12 @@ data:
     etswitch_outgoing_name_enquiry_source_bin=231443
 
     # telebirr endpoints 
-    telebirr_name_check_ep=http://10.180.79.13:30001/payment/services/SYNCAPIRequestMgrService
-    telebirr_transaction_request_ep=http://10.180.79.13:30001/payment/services/APIRequestMgrService
+    telebirr_name_check_ep=https://10.180.70.177:30002/payment/services/APIRequestMgrService
+    telebirr_transaction_request_ep=https://10.180.70.177:30002/payment/services/APIRequestMgrService
     telebirr_incoming_login_id=lib
     telebirr_outgoing_name_enquiry_caller_third_party_id=Query
-    telebirr_outgoing_name_enquiry_caller_password=iPYC7emyUh0S9hWh2pszVq8pcgR26jIMbbVIiGHjtj8=
-    telebirr_outgoing_name_enquiry_initiator_security_credential=u5JeDNpOwjwKp1Y/WRna26Edx7DkWqqCTxlOsqwHu5Q=
+    # telebirr_outgoing_name_enquiry_caller_password=iPYC7emyUh0S9hWh2pszVq8pcgR26jIMbbVIiGHjtj8=
+    # telebirr_outgoing_name_enquiry_initiator_security_credential=u5JeDNpOwjwKp1Y/WRna26Edx7DkWqqCTxlOsqwHu5Q=
 
     # Common static fields 
     common_fee_settlement_account_number=11510305001
