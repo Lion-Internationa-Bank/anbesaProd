@@ -63,7 +63,7 @@ data:
     # telebirr endpoints 
     telebirr_name_check_ep=https://ethiomobilemoney.et:30002/payment/services/SYNCAPIRequestMgrService
     telebirr_transaction_request_ep=https://ethiomobilemoney.et:30002/payment/services/APIRequestMgrService
-    telebirr_incoming_login_id=lib
+    telebirr_incoming_login_id=ethiomm
     telebirr_outgoing_name_enquiry_caller_third_party_id=Query
     # telebirr_outgoing_name_enquiry_caller_password=iPYC7emyUh0S9hWh2pszVq8pcgR26jIMbbVIiGHjtj8=
     # telebirr_outgoing_name_enquiry_initiator_security_credential=u5JeDNpOwjwKp1Y/WRna26Edx7DkWqqCTxlOsqwHu5Q=
