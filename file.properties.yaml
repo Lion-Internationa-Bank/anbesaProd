@@ -103,3 +103,16 @@ data:
     # mpesa credentials
     mpesa_client_username=jgdPJACy5TPGniKsmxahZgjYsfCn9ILI2LZanmk5kukRycGd
     mpesa_initiator_username=testapi
+
+    # Transfer Dispatcher endpoints
+    ethswitch=http://172.16.25.10:7003/webgate/SVWS/Transfer
+    telebirr=https://10.180.70.177:30002/payment/services/APIRequestMgrService
+    mpesawallet=https://10.0.138.22:27000/iap/request
+    dbs_transfer=https://api.anbesabank.et/api/v3/transfers?simulationIndicator={uri.var.simulationIndicator}
+    rtgs=https://finpay.anbesabank.com/api/Transactions/SubmitTxn
+    awach=http://172.16.100.10:8995/AWACH-INT/services
+    accountinfo=https://api.anbesabank.et/dbs/banking/accounts/v1/accounts
+    verify_account_ips=http://10.1.10.29:8085/api/ips/verify-account?receiverBankName={uri.var.receiverBankName}&receiverAccountNo={uri.var.receiverAccountNumber}&channal=cbs
+    push_payment_ips=http://10.1.10.29:8085/api/ips/push-payment
+    generate_receipt=http://10.1.22.198:3060/generate-receipt
+    rtgsgetToken=https://finpay.anbesabank.com/api/Login/GetToken
